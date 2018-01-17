@@ -22,7 +22,7 @@ export class HomePage {
   days: Array<Object> = []
   dayMapObservable: Reference
   dayMap: Object
-  pageSize: number = 20
+  pageSize: number = 100
   
 
   @ViewChild(Content) content: Content;

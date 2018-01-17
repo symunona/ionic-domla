@@ -24,6 +24,8 @@ export class DayProvider {
       if (user) {
         this.user = user;
         this.dayListRef = firebase.database().ref(`/userProfile/${user.uid}/days`);
+        // DEBUG: Expose the days interface so it can be updated manually.
+        window.days = this.dayListRef;
       }
     });
   }

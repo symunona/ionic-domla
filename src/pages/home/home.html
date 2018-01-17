@@ -22,9 +22,9 @@
   <ion-list>
     <ion-item *ngFor="let day of days" (click)="editDay(day.id)">
       <h2>
-        * {{day?.id}} <strong>{{day?.data.title}}</strong> <i>{{day?.data.tags}}</i>
+        {{day?.id}} <strong>{{day?.data.title}}</strong> <i>{{day?.data.tags}}</i>
       </h2>
-      <span>{{day?.data.description}}</span>
+      <p>{{day?.data.description}}</p>
     </ion-item>
   </ion-list>
 

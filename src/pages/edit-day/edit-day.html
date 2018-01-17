@@ -1,13 +1,7 @@
-<!--
-  Generated template for the EditDayPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>EditDay: {{day?.id}} {{day?.title}}</ion-title>
+    <ion-title>{{day?.id}} {{day?.title}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -16,11 +10,7 @@
 <ion-content padding>
   <div *ngIf="day">
     <ion-input [(ngModel)]="day.title" (ionBlur)="saveTheDay()" placeholder="Give your name a title"></ion-input>
-    <ion-textarea [(ngModel)]="day.description" (ionBlur)="saveTheDay()" placeholder="What happened today" rows="5"></ion-textarea>    
-<!-- 
-    <tag-input [(ngModel)]="day.tags" 
-          (onAdd)="saveTheDay(this)"
-          (onRemove)="saveTheDay(this)"></tag-input> -->
     <ion-input [(ngModel)]="day.tags" (ionBlur)="saveTheDay()" placeholder="Tag your day!"></ion-input>
+    <ion-textarea [(ngModel)]="day.description" (ionBlur)="saveTheDay()" placeholder="What happened today" rows="10"></ion-textarea>    
   </div>
 </ion-content>
