@@ -3,15 +3,29 @@
     <ion-title>
       Days Of My Life
     </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="goToProfile()">
+        <ion-icon name="person" title="{{user?.email}}"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
 
-  Aaaaand you are logged in as: {{user?.email}}
-  
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" position="top">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+
+  <ion-list>
+    <ion-item *ngFor="let day of days" (click)="editDay(day.id)">
+      <h2>
+        * {{day?.id}} <strong>{{day?.data.title}}</strong> <i>{{day?.data.tags}}</i>
+      </h2>
+      <span>{{day?.data.description}}</span>
+    </ion-item>
+  </ion-list>
+
 </ion-content>

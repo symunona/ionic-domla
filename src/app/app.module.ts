@@ -27,10 +27,10 @@ import { DayProvider } from '../providers/day/day';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     AuthProvider,
     ProfileProvider,
     DayProvider
   ]
 })
-export class AppModule {}
+export class AppModule { }
