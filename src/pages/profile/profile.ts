@@ -22,12 +22,9 @@ export class ProfilePage {
     public profileProvider: ProfileProvider
   ) { }
 
-  ionViewDidLoad() {
-    console.warn('view did load')
-    this.profileProvider.getAuth().onAuthStateChanged(user => {
-      console.warn('registering auth')
-      this.profileProvider.getUserProfile().on("value", userProfileSnapshot => {
-        console.warn('user just got a profile')
+  ionViewDidLoad() {    
+    this.profileProvider.getAuth().onAuthStateChanged(user => {      
+      this.profileProvider.getUserProfile().on("value", userProfileSnapshot => {        
         this.userProfile = userProfileSnapshot.val();        
       });
     })

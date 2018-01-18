@@ -5,6 +5,12 @@
       Shiplog
     </ion-title>
     <ion-buttons end>
+      <button ion-button icon-only (click)="goToExport()">
+        <ion-icon name="print" title="Export"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="goToStats()">
+        <ion-icon name="podium" title="Stats"></ion-icon>
+      </button>
       <button ion-button icon-only (click)="goToProfile()">
         <ion-icon name="person" title="{{user?.email}}"></ion-icon>
       </button>
@@ -19,12 +25,15 @@
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
-  <div *ngIf="!days.length"> <ion-spinner></ion-spinner> Shipping your logs...</div>
+  <div *ngIf="!days.length">
+    <ion-spinner></ion-spinner> Shipping your logs...</div>
 
   <ion-list>
     <ion-item *ngFor="let day of days" (click)="editDay(day.id)">
       <h2>
-        {{day?.id}} <strong>{{day?.data.title}}</strong> <i>{{day?.data.tags}}</i>
+        {{day?.count}} {{day?.id}}
+        <strong>{{day?.data.title}}</strong>
+        <i>{{day?.data.tags}}</i>
       </h2>
       <p>{{day?.data.description}}</p>
     </ion-item>
