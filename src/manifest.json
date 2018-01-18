@@ -1,13 +1,13 @@
 {
-  "name": "Ionic",
-  "short_name": "Ionic",
+  "name": "Ship Log",
+  "short_name": "shiplog",
   "start_url": "index.html",
-  "display": "standalone",
+  "display": "fullscreen",
   "icons": [{
-    "src": "assets/imgs/logo.png",
+    "src": "assets/imgs/sun-logo.png",
     "sizes": "512x512",
     "type": "image/png"
   }],
-  "background_color": "#4e8ef7",
-  "theme_color": "#4e8ef7"
+  "background_color": "#e5e537",
+  "theme_color": "#e5e537"
 }
