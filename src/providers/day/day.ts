@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Reference } from '@firebase/database-types';
 import firebase from 'firebase';
-import moment from 'moment';
 
 /*
   Generated class for the DayProvider provider.
@@ -25,7 +24,7 @@ export class DayProvider {
         this.user = user;
         this.dayListRef = firebase.database().ref(`/userProfile/${user.uid}/days`);
         // DEBUG: Expose the days interface so it can be updated manually.
-        window.days = this.dayListRef;
+        window['days'] = this.dayListRef;
       }
     });
   }
@@ -35,10 +34,7 @@ export class DayProvider {
       .set(dayData);
   }
 
-  public getDayMap(): Reference {
-    let range = 14;
-    let today = moment().startOf('day')    
-
+  public getDayMap(): Reference {        
     return firebase.database().ref(`/userProfile/${this.user.uid}/days`);
   }
 

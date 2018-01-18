@@ -1,7 +1,7 @@
 import { Reference } from '@firebase/database-types';
 import { DayProvider } from './../../providers/day/day';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, Content } from 'ionic-angular';
+import { NavController, Content } from 'ionic-angular';
 import firebase from 'firebase';
 import moment, { Moment } from 'moment';
 
@@ -22,7 +22,7 @@ export class HomePage {
   days: Array<Object> = []
   dayMapObservable: Reference
   dayMap: Object
-  pageSize: number = 100
+  pageSize: number = 40
   
 
   @ViewChild(Content) content: Content;
