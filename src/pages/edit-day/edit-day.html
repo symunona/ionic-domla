@@ -1,16 +1,23 @@
 <ion-header>
-
   <ion-navbar>
-    <ion-title>{{day?.id}} {{day?.title}}</ion-title>
+    <ion-title class="center">
+      {{day?.id}}
+    </ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
+  <button ion-button round color="light" (click)="nextDay()" class="next-day">
+    &gt;
+  </button>
+  <button ion-button round color="light" (click)="prevDay()" class="prev-day">
+    &lt;
+  </button>
+
   <div *ngIf="day">
     <ion-input [(ngModel)]="day.title" (ionBlur)="saveTheDay()" placeholder="Give your name a title"></ion-input>
     <ion-input [(ngModel)]="day.tags" (ionBlur)="saveTheDay()" placeholder="Tag your day!"></ion-input>
-    <ion-textarea [(ngModel)]="day.description" (ionBlur)="saveTheDay()" placeholder="What happened today" rows="10"></ion-textarea>    
+    <ion-textarea [(ngModel)]="day.description" (ionBlur)="saveTheDay()" placeholder="What happened today" rows="10"></ion-textarea>
   </div>
 </ion-content>

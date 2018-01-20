@@ -15,6 +15,7 @@ export class DayProvider {
   public dayListRef: Reference;
   public idFormat: string = 'YYYY-MM-DD';
   public firstDay: Object;
+  public getDayPromiseSuccessCallback: Function
 
   constructor() {
     console.log('Hello DayProvider Provider');
@@ -25,6 +26,9 @@ export class DayProvider {
         this.dayListRef = firebase.database().ref(`/userProfile/${user.uid}/days`);
         // DEBUG: Expose the days interface so it can be updated manually.
         window['days'] = this.dayListRef;
+        if (this.getDayPromiseSuccessCallback){
+          this.getDayPromiseSuccessCallback(this.dayListRef)
+        }
       }
     });
   }
@@ -38,10 +42,19 @@ export class DayProvider {
     return firebase.database().ref(`/userProfile/${this.user.uid}/days`);
   }
 
-  getDay(dayId: string): Reference {
-    var ref = this.dayListRef.child(dayId);
-    return ref;
+  getDay(dayId: string): any {
+    if (this.dayListRef){
+      return this.dayListRef.child(dayId);
+    }
+    else {
+      let self = this
+      return new Promise(function(success, fail){
+        self.getDayPromiseSuccessCallback = success.bind(self);
+      });
+    }
+    
   }
+  getDayReference
 
 
 }

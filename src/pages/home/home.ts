@@ -27,14 +27,15 @@ export class HomePage {
 
   @ViewChild(Content) content: Content;
   constructor(public navCtrl: NavController, public dayProvider: DayProvider) {
+    let self = this;
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.user = user;
         this.dayMapObservable = dayProvider.getDayMap();
         this.dayMapObservable.on('value', allDays => {
-          this.dayMap = allDays.exportVal();
-          this.populateNextPage(true);
-          this.scrollToBottom();
+          self.dayMap = allDays.exportVal();
+          self.populateNextPage(true);        
+          self.scrollToBottom();
         })
         this.firstDay = moment().startOf('day')
       }

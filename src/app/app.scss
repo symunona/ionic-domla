@@ -24,6 +24,14 @@ ion-header, ion-navbar, .toolbar-background-md{
     
     .bar-button-default-md, .bar-button-clear-md-default, .bar-button-md-default{
         color: #eee !important;
-    }
+    }    
 }
 
+.center{ text-align: center; }
+
+.next-day, .prev-day{
+    position: fixed;
+    bottom: 10px;        
+}
+.prev-day { left: 10px; }
+.next-day { right: 10px; }
