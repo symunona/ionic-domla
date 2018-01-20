@@ -4,10 +4,10 @@
   "start_url": "index.html",
   "display": "fullscreen",
   "icons": [{
-    "src": "assets/imgs/sun-logo.png",
+    "src": "assets/imgs/logo-ffed0d.png",
     "sizes": "512x512",
     "type": "image/png"
   }],
-  "background_color": "#e5e537",
-  "theme_color": "#e5e537"
+  "background_color": "#2D2240",
+  "theme_color": "#6C21EE"
 }
