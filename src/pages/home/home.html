@@ -20,14 +20,20 @@
 
 <ion-content padding>
 
-  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" position="top">
-    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  <div *ngIf="searchKeyword && !filteredDataSet?.length">
+    No results for {{searchKeyword}}
+  </div>
 
-  <div *ngIf="!days.length">
-    <ion-spinner></ion-spinner> Shipping your logs...</div>
+  <div *ngIf="!searchKeyword">
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)" position="top">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 
+    <div *ngIf="!days.length">
+      <ion-spinner></ion-spinner> Shipping your logs...
+    </div>
+  </div>
   <ion-list>
     <ion-item *ngFor="let day of days" (click)="editDay(day.id)">
       <h2>
@@ -38,5 +44,12 @@
       <p>{{day?.data.description}}</p>
     </ion-item>
   </ion-list>
-
+  
+  <hr>
+  
+  <ion-input [(ngModel)]="searchKeyword" 
+    ngModelOptions="{updateOn : 'change blur'}"
+    (change)="populateNextPage(true)" 
+    placeholder="Search..."></ion-input>  
+  
 </ion-content>

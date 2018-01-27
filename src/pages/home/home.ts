@@ -3,7 +3,7 @@ import { DayProvider } from './../../providers/day/day';
 import { Component, ViewChild } from '@angular/core';
 import { NavController, Content } from 'ionic-angular';
 import firebase from 'firebase';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 
 @Component({
   selector: 'page-home',
@@ -13,7 +13,7 @@ export class HomePage {
 
   public user: any
   dayList: Array<any>
-  firstDay: Moment
+  firstDay: any
   populatedOnce: Boolean = false
   lastScrollPosition: any
 
@@ -23,6 +23,10 @@ export class HomePage {
   dayMapObservable: Reference
   dayMap: Object
   pageSize: number = 40
+
+  searchKeyword: string
+  filteredDataSet: Array<any>
+
 
 
   @ViewChild(Content) content: Content;
@@ -34,14 +38,14 @@ export class HomePage {
         this.dayMapObservable = dayProvider.getDayMap();
         this.dayMapObservable.on('value', allDays => {
           self.dayMap = allDays.exportVal();
-          self.populateNextPage(true);        
+          self.populateNextPage(true);
           self.scrollToBottom();
         })
         this.firstDay = moment().startOf('day')
       }
     });
-
   }
+
   goToProfile(): void {
     this.navCtrl.push("ProfilePage");
   }
@@ -71,9 +75,18 @@ export class HomePage {
     this.lastScrollPosition = this.content.scrollTop;
   }
 
+
+  search(keyword) {
+    this.searchKeyword = keyword;
+    this.populateNextPage(true);
+  }
+
+
   populateNextPage(reset: boolean) {
     let limit = this.pageSize;
     let firstLoggedDay
+
+
 
     if (Object.keys(this.dayMap).length) {
       firstLoggedDay = Object.keys(this.dayMap)[0]
@@ -88,18 +101,63 @@ export class HomePage {
       this.days.splice(0, this.days.length)
       this.firstDay = moment().startOf('day')
     }
-    for (let i = 0; i < limit + 1; i++) {
-      let dayKey: string = this.firstDay.format(this.idFormat)
-      let dayCount = moment(dayKey, this.idFormat).diff(firstLoggedDayMoment, 'days')
-      let newDay = {
-        id: dayKey,
-        count: dayCount,
-        data: this.dayMap[dayKey] || {}
+    if (!this.searchKeyword) {
+      for (let i = 0; i < limit + 1; i++) {
+        let dayKey: string = this.firstDay.format(this.idFormat)
+        let dayCount = moment(dayKey, this.idFormat).diff(firstLoggedDayMoment, 'days')
+        let newDay = {
+          id: dayKey,
+          count: dayCount,
+          data: this.dayMap[dayKey] || {}
+        }
+
+        this.days.unshift(newDay);
+
+        this.firstDay.subtract(1, 'day')
+      }
+    }
+    else {
+
+      this.filteredDataSet = Object.keys(this.dayMap).sort().filter(dayKey =>
+        (this.dayMap[dayKey].title || '').includes(this.searchKeyword) ||
+        (this.dayMap[dayKey].tags || '').includes(this.searchKeyword) ||
+        (this.dayMap[dayKey].description || '').includes(this.searchKeyword)
+      )
+
+      console.warn('found', this.filteredDataSet.length)
+
+      if (reset) {
+        this.days.splice(0, this.days.length)
+        this.firstDay = this.filteredDataSet[this.filteredDataSet.length - 1]
       }
 
-      this.days.unshift(newDay);
+      limit = (this.filteredDataSet.length -
+        this.filteredDataSet.indexOf(this.firstDay)) > this.pageSize ?
+        this.pageSize :
+        this.filteredDataSet.indexOf(this.firstDay) - 1
 
-      this.firstDay.subtract(1, 'day')
+      console.warn('limit', limit, 'firstDay', this.firstDay)
+
+      console.warn(this.filteredDataSet)
+
+      for (let i = 0; i < limit + 1; i++) {
+        let dayKey: string = this.firstDay;
+        let dayCount = moment(dayKey, this.idFormat).diff(firstLoggedDayMoment, 'days')
+
+        let newDay = {
+          id: dayKey,
+          count: dayCount,
+          data: this.dayMap[dayKey] || {}
+        }
+
+        this.days.unshift(newDay);
+
+        let indexOfThisDayInSearch = this.filteredDataSet.indexOf(dayKey);
+        if (indexOfThisDayInSearch === 0) {
+          throw new Error('this should not happen... ')
+        }
+        this.firstDay = this.filteredDataSet[indexOfThisDayInSearch - 1]
+      }
     }
   }
 
@@ -115,7 +173,11 @@ export class HomePage {
 
   scrollToBottom() {
     setTimeout(() => {
-      this.content.scrollToBottom(0);
+      try {
+        this.content.scrollToBottom(0);
+      }
+      catch (e) { // why are you even here???
+      }
     });
   }
 
