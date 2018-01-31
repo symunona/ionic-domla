@@ -11,13 +11,27 @@
   <button ion-button round color="light" (click)="nextDay()" class="next-day">
     &gt;
   </button>
-  <button ion-button round color="light" (click)="prevDay()" class="prev-day">
-    &lt;
-  </button>
-
+  <button ion-button round color="light" (click)="prevDayLink()" class="prev-day">
+      &lt;
+    </button>
   <div *ngIf="day">
     <ion-input [(ngModel)]="day.title" (ionBlur)="saveTheDay()" placeholder="Give your name a title"></ion-input>
     <ion-input [(ngModel)]="day.tags" (ionBlur)="saveTheDay()" placeholder="Tag your day!"></ion-input>
     <ion-textarea [(ngModel)]="day.description" (ionBlur)="saveTheDay()" placeholder="What happened today" rows="10"></ion-textarea>
+  </div>
+
+  <div *ngIf="prevDay">
+    <div>
+      <a (click)="prevDayLink()">
+        <h2>
+          <ion-icon name="arrow-back"></ion-icon>
+          Prev day
+        </h2>
+      </a>
+      <p>
+        {{prevDay.title}} {{prevDay.tags}}
+      </p>
+      <div>{{prevDay.description}}</div>
+    </div>
   </div>
 </ion-content>

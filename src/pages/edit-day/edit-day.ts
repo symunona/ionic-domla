@@ -21,60 +21,71 @@ import { HomePage } from '../home/home';
 export class EditDayPage {
 
   idFormat: string;
-
+  prevDay: any;
   day: any;
 
 
   @ViewChild(Navbar) navBar: Navbar
   constructor(public navCtrl: NavController,
-    public navParams: NavParams,    
+    public navParams: NavParams,
     public dayProvider: DayProvider,
     public viewCtrl: ViewController
-  ) {}
+  ) { }
 
 
   nextDay() {
     this.navCtrl.push("EditDayPage", {
       dayId: moment(this.day.id, this.dayProvider.idFormat)
+        .startOf('day')
         .add(1, 'day').format(this.dayProvider.idFormat)
     });
   }
-  prevDay() {
+
+  prevDayLink() {
     this.navCtrl.push("EditDayPage", {
       dayId: moment(this.day.id, this.dayProvider.idFormat)
-        .add(-2, 'day').format(this.dayProvider.idFormat)
+        .startOf('day')
+        .add(-1, 'day').format(this.dayProvider.idFormat)
     });
   }
 
   ionViewDidLoad() {
     let id = this.navParams.get('dayId')
-    if (!id){
-      if (localStorage.getItem('lastDayLoaded')){
+    if (!id) {
+      if (localStorage.getItem('lastDayLoaded')) {
         id = localStorage.getItem('lastDayLoaded')
       }
-      else{
+      else {
         this.navCtrl.setRoot('HomePage')
       }
     }
     let isThisAPromise = this.dayProvider.getDay(this.navParams.get('dayId'));
-    if (!isThisAPromise.then){
+    if (!isThisAPromise.then) {
       this.registerListener.call(this, isThisAPromise)
     }
-    else{
+    else {
       isThisAPromise.then(this.registerListener.bind(this))
-    }  
+    }
 
-    this.navBar.backButtonClick = (e:UIEvent)=>{
+    this.navBar.backButtonClick = (e: UIEvent) => {
       // todo something
       this.navCtrl.setRoot(HomePage)
-     }
+    }
   }
 
-  registerListener(reference: any){    
+  registerListener(reference: any) {
     reference.on('value', eventSnapshot => {
       this.day = eventSnapshot.val() || {};
       this.day.id = eventSnapshot.key;
       localStorage.setItem('lastDayLoaded', this.day.id);
+
+      let prevDayId = moment(this.day.id, this.dayProvider.idFormat)
+        .startOf('day')
+        .subtract(1, 'day').add(1,'second').format(this.dayProvider.idFormat)
+        // console.warn(this.day.id, moment(this.day.id, this.dayProvider.idFormat).format())
+      this.dayProvider.getDay(prevDayId).on('value', prevDaySnapshot => {
+        this.prevDay = prevDaySnapshot.val();
+      });
     });
   }
 
